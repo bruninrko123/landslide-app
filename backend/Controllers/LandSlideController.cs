@@ -9,7 +9,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LandSlideController: ControllerBase
+    public class LandSlideController : ControllerBase
     {
         private readonly WeatherService _weatherService;
 
@@ -29,35 +29,28 @@ namespace backend.Controllers
         [HttpGet("check")]
         public async Task<IActionResult> CheckLandslideRisk(string cityName)
         {
-            var (totalRainfall, rainfallData) = await _weatherService.GetThreeDayRainfallAmount(cityName);
 
-            var riskLevel =_predictionService.DetermineRiskLevel(totalRainfall, rainfallData);
-
-            var hotSpot = await _dbContext.HotSpots.FindAsync(cityName);
-            if (hotSpot == null)
+            try
             {
-                hotSpot = new HotSpot
-                {
-                    CityName = cityName,
-                    lastRainFallAmount = totalRainfall,
-                    RiskLevel = riskLevel,
-                    LastUpdated = DateTime.UtcNow,
-                    SearchCount = 1
-                };
-                _dbContext.HotSpots.Add(hotSpot);
+                var hotspotService = new HotspotService(_dbContext, _predictionService, _weatherService);
+                var hotspot = await hotspotService.GetHotspotForCity(cityName);
+                return Ok(hotspot);
             }
-            else
+            catch (Exception ex)
             {
-                hotSpot.lastRainFallAmount = totalRainfall;
-                hotSpot.RiskLevel = riskLevel;
-                hotSpot.LastUpdated = DateTime.UtcNow;
-                hotSpot.SearchCount += 1;
-                _dbContext.HotSpots.Update(hotSpot);
+                Console.WriteLine($"Error checking landslide risk for {cityName}: {ex.Message}");
+                return StatusCode(500, $"Error checking landslide risk for {cityName}: {ex.Message}");
             }
 
-            await _dbContext.SaveChangesAsync();
 
-            return Ok(new { CityName = cityName, RainfallAmount = totalRainfall, RiskLevel = riskLevel });
+
+
+
         }
+
+
+
+
+
     }
 }

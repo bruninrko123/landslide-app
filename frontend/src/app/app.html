@@ -1,0 +1,41 @@
+<div style="max-width: 500px; margin: 40px auto; font-family: sans-serif">
+  <h2>Landslide Risk Checker</h2>
+
+  <div style="margin-bottom: 15px">
+    <label>Select City:</label>
+    <select [(ngModel)]="selectedCity" style="width: 100%; padding: 8px">
+      <option value="" disabled>-- Pick a city --</option>
+      @for (city of cities; track city) {
+        <option [value]="city">{{ city }}</option>
+      }
+    </select>
+  </div>
+
+  <button
+    (click)="checkLandSlideRisk()"
+    [disabled]="loading() || !selectedCity"
+    style="
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    "
+  >
+    {{ loading() ? 'Checking...' : 'Check Status' }}
+  </button>
+
+  <!-- ERROR MESSAGE -->
+  @if (errorMessage() && errorMessage() !== '') {
+    <p style="color: red">{{ errorMessage }}</p>
+  }
+  <!-- RESULT CARD -->
+  @if (result()) {
+    <div style="margin-top: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px">
+      <h3>{{ result().city }}</h3>
+      <p><strong>Risk:</strong> {{ result().riskLevel }}</p>
+      <p><strong>Rainfall:</strong> {{ result().lastRainFallAmount }}mm</p>
+    </div>
+  }
+</div>
