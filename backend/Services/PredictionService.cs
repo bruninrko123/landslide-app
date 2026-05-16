@@ -2,7 +2,11 @@ using backend.Data;
 
 
 namespace backend.Services
-{
+{   
+    /// <summary>
+    /// This service is responsible for determining the landslide risk level based on the rainfall data.
+    /// 
+    /// </summary>
     public class PredictionService
     {
         private readonly AppDbContext _dbContext;
@@ -13,16 +17,15 @@ namespace backend.Services
         }
 
 
-        // public string DetermineRiskLevel(double rainfallAmount)
-        // {
-        //     if (rainfallAmount < 20)
-        //         return "Low";
-        //     else if (rainfallAmount < 50)
-        //         return "Medium";
-        //     else
-        //         return "High";
-        // }
+    
         
+
+        /// <summary>
+        /// Determines the landslide risk level based on the three-day weather history.
+        /// </summary>
+        /// <param name="rainfallAmount"></param>
+        /// <param name="threeDayWeatherHistory"></param>
+        /// <returns>The landslide risk level. Low, Medium, High, Very High</returns>
         public string DetermineRiskLevel(double rainfallAmount, Dictionary<string, double> threeDayWeatherHistory)
         {
             // Implementation for determining risk level based on three-day weather history

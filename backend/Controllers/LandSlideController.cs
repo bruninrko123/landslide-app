@@ -25,7 +25,11 @@ namespace backend.Controllers
             _dbContext = dbContext;
         }
 
-
+        /// <summary>
+        /// Checks the landslide risk for a given city
+        /// </summary>
+        /// <param name="cityName"></param>
+        /// <returns></returns>
         [HttpGet("check")]
         public async Task<IActionResult> CheckLandslideRisk(string cityName)
         {

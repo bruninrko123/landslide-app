@@ -6,6 +6,9 @@ using backend.Models;
 namespace backend.Services
 {
 
+    /// <summary>
+    /// This service is responsible for fetching weather data from an external API. It includes methods to get the current rainfall amount as well as the rainfall history for the past three days.
+    /// </summary>
     public class WeatherService
     {
         private readonly HttpClient _httpClient;
@@ -22,7 +25,7 @@ namespace backend.Services
         /// </summary>
         /// <param name="cityName"></param>
         /// <returns></returns>
-    public async Task<double> GetRainfallAmount(string cityName)
+        public async Task<double> GetRainfallAmount(string cityName)
         {
 
             var response = await _httpClient.GetAsync($"https://api.weatherapi.com/v1/current.json?key={_apiKey}&q={cityName}");
@@ -36,11 +39,18 @@ namespace backend.Services
                 // Handle error response
                 Console.WriteLine($"Failed to fetch weather data for {cityName}. Status Code: {response.StatusCode}");
                 throw new Exception($"Failed to fetch weather data for {cityName}. Status Code: {response.StatusCode}");
-                 // Default to 0 if API call fails
+                // Default to 0 if API call fails
             }
         }
 
-        // Change this line:
+        
+        
+        /// <summary>
+        /// Fetches the rainfall amount for the past three days for a given city using a weather API.
+        /// </summary>
+        /// <param name="totalRainfall"></param>
+        /// <param name="cityName"></param>
+        /// <returns>The total rainfall amount for the past three days and the rain amount for each of the past three days</returns>
         public async Task<(double totalRainfall, Dictionary<string, double> rainfallData)> GetThreeDayRainfallAmount(string cityName)
         {
             // Get last 3 days rainfall amount from weather API

@@ -3,7 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 
 namespace backend.Models
-{
+{   
+    /// <summary>
+    /// This class determines the structure of the hotspot DB table.
+    /// </summary>
     public class HotSpot
     {
         [Key]

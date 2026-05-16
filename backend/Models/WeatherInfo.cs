@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace backend.Models
 
 {
+    /// <summary>
+    /// This class represents the structure of the weather data returned by the external weather API. 
+    /// </summary>
     public class WeatherInfo
     {
         [JsonPropertyName("current")]

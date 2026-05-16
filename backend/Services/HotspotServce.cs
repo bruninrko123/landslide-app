@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services
 {
-
+    /// <summary>
+    /// This service is responsible for handling the logic related to hotspots, including fetching weather data,  and saving results to the database.
+    /// </summary>
     public class HotspotService
     {
         private readonly AppDbContext _dbContext;
@@ -20,6 +22,12 @@ namespace backend.Services
 
         }
 
+        /// <summary>
+        /// Gets the hotspot (weather variables) information for a given city from the external weather API
+        /// and saves the hotspot to the DB.
+        /// </summary>
+        /// <param name="cityName"></param>
+        /// <returns>The hotspot record for the specified city</returns>
         public async Task<HotSpot> GetHotspotForCity(string cityName)
         {
             var cachedRecord = await _dbContext.HotSpots.FirstOrDefaultAsync(h => h.CityName.ToLower() == cityName.ToLower() && h.RecordDate.Date == DateTime.UtcNow.Date);
